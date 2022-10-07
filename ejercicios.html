@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>index</title>
+</head>
+
+<body>
+    <script>
+
+        //1. Implemente una funcion llamada composedValue que tome como parametros la dos funciones
+        //(square and double) y un valor x. Luego esta funcion debe retornar el resultado de: (f o g)(x);
+        //donde f y g son square y double respectivamente. (2 puntos)
+
+        function square(x) {
+            return x * x;
+        }
+
+        function double(x) {
+            return x * 2;
+        }
+
+        // funcion composedvalue que recibe como parametro 2 funciones y un valor
+        function composedValue(square, double, x) {
+            //retornamos la composicion de funciones
+            return square(double(x));
+        }
+
+        console.log(composedValue(square, double, 3)); // 36
+
+        //2. Implemente una funcion compose que tome como parametros dos funciones ( f1 y f2 ) y luego
+        //retorne otra funcion que representa la funcion compuesta: (f1 ◦ f2)(x). (2 puntos)
+
+        function square(x) { return (x * x); }
+        function double(x) { return (x * 2); }
+
+        compose = (f1, f2) => value => f1(f2(value));
+
+        var f3 = compose(square, double);
+        var f4 = compose(double, square);
+        console.log("f3 (5) :", f3(5)); // 100
+        console.log("f4 (5) :", f4(5)); // 50
+        console.log("f3 (10) :", f3(10)); // 400
+        console.log("f4 (10) :", f4(10)); // 200
+        //3. Implemente una funcion find que tome como parametros un array y una funcion f (condicion).
+        //Luego, debe retornar otro vector que resulte de aplicar un filtro segun f en cada elemento
+        //del vector. Solo los elementos que cumplan la condicion (f) estaran presenten en el vector de
+        //resultado. (2 puntos)
+
+        function isEven(num) { return (num % 2 == 0); }
+        function find(arr, f) {
+            return arr.filter(number => { return f(number); });
+        }
+        isEven(3) // false
+        isEven(4) // true
+        result = find([1, 3, 5, 4, 2], isEven);
+        console.log(" find result :", result); // [4 , 2]
+
+        //4. Implemente una funcison mymap que tome como parametros un array y una funcion f. Luego,
+        //debe retornar otro vector que resulte de aplicar la funcion f en cada elemento del vector. (2
+        //puntos)
+
+        square = x => x * x;
+        function mymap(arr, f) {
+            return arr.map(x => f(x));
+        }
+        console.log(square(5));
+        result1 = mymap([1, 2, 3, 4, 5], square);
+        result2 = mymap([1, 4, 9, 16, 25], Math.sqrt);
+        console.log(" result1 :", result1); // [1 , 4, 9, 16 , 25]
+        console.log(" result2 :", result2); // [1 , 2, 3, 4, 5]
+
+
+        //5. Implemente una funcion find recursive que realice lo mismo que la funcion find implementada
+        //anteriormente. Pero ahora, esta funcion debe respetar el paradigma funcional, es decir, debe ser
+        //una funcion pura y no debe contener ciclos. NOTA: Puede utilizar la funcion slice y concat. (3
+        //puntos)
+
+        function isEven(num) { return (num % 2 == 0); }
+
+
+        function find_recursive(arr, index, f, result) {
+
+            //creamos un nuevo array para el resultado si este no existe
+            if (!result) result = new Array();
+
+            // si el index es menor que el a tamaño del arreglo comenzamos a iterar
+            if (index < arr.length) {
+
+                // si el elemento cumple con la funcion la agregamos al nuevo arreglo
+                if (f(arr[index])) {
+                    result.push(arr[index]);
+                }
+
+                //aumentamos el index
+                index++;
+
+                // retornamos la funcion 
+                return find_recursive(arr, index, f, result);
+            }
+
+            // retornamos el resultado
+            return result;
+        }
+
+        var list = [1, 3, 5, 4, 2];
+        var result = find_recursive(list, 0, isEven);
+        console.log(" resuld find_recursive :", result);
+
+        //6. Implemente una funcion mymap recursive que realice lo mismo que la funcion mymap imple-
+        //mentada anteriormente. Pero ahora, esta funcion debe respetar el paradigma funcional, es decir,
+        //debe ser una funcin pura y no debe contener ciclos. NOTA: Puede utilizar la funcion slice y
+        //concat. (4 puntos)
+
+        square = x => x * x;
+        function mymap_recursive1(arr, f) {
+            return arr.map(x => f(x));
+        }
+
+        function mymap_recursive(arr, index, f, result) {
+            //creamos un nuevo array para el resultado si este no existe
+            if (!result) result = new Array();
+
+            // si el index es menor que el a tamaño del arreglo comenzamos a iterar
+            if (index < arr.length) {
+                // agregamos el elemento afectado por la funcion a la lista
+
+                result.push(f(arr[index]));
+
+                //aumentamos el index
+                index++;
+
+                // retornamos la funcion
+                return mymap_recursive(arr, index, f, result);
+            }
+
+            // retornamos el resultado
+            return result;
+        }
+
+
+        result1 = mymap_recursive([1, 2, 3, 4, 5], 0, square);
+        result2 = mymap_recursive([1, 4, 9, 16, 25], 0, Math.sqrt);
+        console.log(" mymap_recursive result1 :", result1); // [1 , 4, 9, 16 , 25]
+        console.log(" mymap_recursive result2 :", result2); // [1 , 2, 3, 4, 5]
+
+    </script>
+</body>
+
+</html>
